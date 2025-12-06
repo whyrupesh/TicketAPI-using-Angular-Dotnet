@@ -1,0 +1,48 @@
+<div class="container">
+  <header>
+    <h1>Support Tickets</h1>
+    <p>Overview of current open tickets</p>
+  </header>
+
+  <div class="table-wrapper">
+    <table *ngIf="tickets$ | async as tickets; else loading">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Summary</th>
+          <th>Description</th>
+          <th>Severity</th>
+          <th>Status</th>
+          <th>Created</th>
+          <th>Target Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ticket of tickets">
+          <td>#{{ ticket.id }}</td>
+          <td class="primary-text">{{ ticket.shortDescription }}</td>
+          <td class="muted-text">{{ ticket.description }}</td>
+          <td>
+            <span class="badge" [ngClass]="ticket.severity.toLowerCase()">
+              {{ ticket.severity }}
+            </span>
+          </td>
+          <td>
+            <span class="status-indicator">
+              <span class="dot" [ngClass]="ticket.status.toLowerCase().replace(' ', '-')"></span>
+              {{ ticket.status }}
+            </span>
+          </td>
+          <td>{{ ticket.createdDate | date:'MMM d, y' }}</td>
+          <td>{{ ticket.targetDate | date:'mediumDate' }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #loading>
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading tickets...</p>
+      </div>
+    </ng-template>
+  </div>
+</div>
